@@ -1,0 +1,10 @@
+List of things to do for week 4:
+
+
+Fix Published At bug
+
+Fix delete comment bug
+
+Create Threaded comments
+
+

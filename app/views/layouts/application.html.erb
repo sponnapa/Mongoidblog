@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mongoidblog</title>
+        <%= stylesheet_link_tag    "application", :media => "all" %>
+        <%= javascript_include_tag "application" %>
+        <%= javascript_include_tag  "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
+        <%= javascript_include_tag  "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"%>
+        <%= csrf_meta_tags %>
+        <script type=”text/javascript”>
+            // function create GetXmlHttpObject
+        </script>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">Sas's Webpage</a>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li><%= link_to "Main"%></li>
+                            <li><%= link_to "Blog" %></li>
+                            <li><%= link_to "Contact" %></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class= "container">
+            <% flash.each do |name, msg| %>
+                <div class="alert alert-<%= name == :notice ? "success" : "error" %>">
+                    <a class="close" data-dismiss="alert">×</a>
+                    <%= msg %>
+                </div>
+            <% end %>
+            <div class = "row">
+                <div class = "span10">
+                    <div class="hero-unit">
+                        <%= yield %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

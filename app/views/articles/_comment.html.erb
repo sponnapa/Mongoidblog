@@ -1,0 +1,20 @@
+<div class = "message">
+
+    <b><%=@comment.name + " wrote: "%></b>
+    <br>
+    <%= @comment.content %>
+    <% if @comment.published_on.present? %>
+        <br>
+        <i><%= " on "%><%= @comment.published_on.strftime("%B %d, %Y") %></i>
+    <% end %>
+    <br>
+    <div class="actions">
+        <% if user_signed_in? %>
+            <%= link_to "delete", article_comment_path(@article, @comment), 
+                :confirm => "Are you sure?", 
+                :method => :delete 
+            %>
+        <% end %>
+    </div>
+</div>
+<br>

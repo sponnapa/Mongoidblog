@@ -1,0 +1,110 @@
+<%- model_class = Article.new.class -%>
+<div class = "mainTitle">
+    <h1><%=t '.title', :default => "Welcome To My Blog" %></h1>
+</div>
+
+
+<% @articles.each do |article| %>
+    <br>
+    <div class = articleTitle>
+        <h2><%= article.name %></h3>
+    </div>
+    <br>
+    <div class = "articleContent">
+        <h4><%= article.context %></h4>
+
+        <% if article.published_on.present? %>
+            <h4><i><%= " Sas Ponnapalli | "%><%= article.published_on.strftime("%B %d, %Y") %></i></h4>
+            <br>
+        <% end %>
+    </div>
+    <div id = "comments">
+        <% if article.comments.size == 0 %>
+            <h3><%= "No Comments Added ... yet" %></h3>
+            <br>
+        <% end %>
+        <% if article.comments.size > 0 %>
+            <div class = articleTitle>
+                <h3 id = "comments_count" ><%= pluralize(article.comments.size, 'Comment') %></h3>
+            </div>
+            <% for comment in article.comments %>
+                <div class = "message">
+
+                    <b><%=comment.name + " wrote: "%></b>
+                    <br>
+                    <%= comment.content %>
+                    <% if comment.published_on.present? %>
+                        <br>
+                        <i><%= " on "%><%= comment.published_on.strftime("%B %d, %Y") %></i>
+                    <% end %>
+                    <br>
+                    <div class="actions">
+                        <% if user_signed_in? %>
+                            <%= link_to "delete", article_comment_path(article, comment), 
+                                :confirm => "Are you sure?", 
+                                :method => :delete 
+                            %>
+                        <% end %>
+                        <%= link_to "reply", article_comment_path(article, comment) %>
+                    </div>
+                </div>
+                <br>
+            <% end %>
+        <% end %>
+    </div>
+    <div class = articleTitle>
+        <h4>Add Comment</h4>
+    </div>
+    <%= form_for [article, Comment.new], :html => { :class => 'form-horizontal' }, :remote=>true do |f| %>
+
+        <div class = "control-group">
+            <%= f.label :name, :class => 'control-label' %> 
+            <div class = "controls">
+                <%= f.text_field :name, :class =>'text_field'%>
+            </div>
+        </div>
+
+        <div class = "control-group">
+            <%= f.label :comment, :class => 'control-label' %> 
+            <div class = "controls">
+                <%= f.text_area :content, :rows=>5,:class =>'text_area'%>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <%= f.label :published_on, :class => 'control-label' %>
+            <div class="controls">
+                <%= f.date_select :published_on, :class => 'text_field' %>
+            </div>
+        </div>
+
+        <div class = "form-actions">
+            <%= f.submit nil, :class => 'btn btn-primary' %>
+        </div>
+
+    <% end %>
+
+    <br>
+
+    <% if user_signed_in? %>
+        <%= link_to t('.edit', :default => t("helpers.links.edit")),
+            edit_article_path(article), :class => 'btn btn-mini' 
+        %>
+        <%= link_to t('.destroy', :default => t("helpers.links.delete")),
+            article_path(article),
+            :method => :delete,
+            :confirm => t('.confirm', :default => 'Are you sure?'),
+            :class => 'btn btn-mini btn-danger'
+        %>
+    <% end %>
+
+<% end %>
+
+
+<br>
+<% if user_signed_in? %>
+    <%= link_to t('.new', :default => t("helpers.links.new")),
+        new_article_path,
+        :class => 'btn btn-primary' 
+    %>
+<% end %>
